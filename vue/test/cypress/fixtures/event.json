@@ -1,0 +1,45 @@
+{
+  "cond": "Natural{enter}",
+  "name": "Productor de prueba",
+  "typeDoc": "Cédula de Ciudadanía{enter}",
+  "doc": "10293847456",
+  "email": "prueba@prueba.com",
+  "typeProd": "Gran productor{enter}",
+  "estate": "Poseedor{enter}",
+  "addr": "direccion prueba",
+  "tel": "35235234",
+  "sex": "Hombre{enter}",
+  "et": "Gitano{enter}",
+  "location": {
+    "pres": "23",
+    "alt": "45",
+    "mun": "Bucaramanga{enter}",
+    "dpto": "Santander{downarrow}{downarrow}{enter}",
+    "obs": "Observacion de prueba"
+  },
+  "event": {
+    "typeEv": "Sanitario{enter}",
+    "typeSubEv": "Plaga{enter}",
+    "cuarent": "si{enter}",
+    "plag": "Thrips palmi Karny{enter}",
+    "exp": "Explotación Agrícola{enter}",
+    "agro": {
+      "cropName": "Arroz{enter}",
+      "reportUnit": "Fanegada{enter}",
+      "areaCrop": 45,
+      "material": "Semilla{downarrow}{enter}",
+      "amount": 10,
+      "reportUnit1": "Gramos{downarrow}{enter}",
+      "sourceSeed": "Compra{enter}",
+      "produced": 12,
+      "totalPrice": 100000,
+      "daysExposed": 15,
+      "kgPrice": 40000,
+      "act1": "Siembra{enter}",
+      "act2": "Aporques{enter}",
+      "numJorn": 4,
+      "act3": "Transporte{enter}",
+      "act4": "Energía{enter}"
+    }
+  }
+}

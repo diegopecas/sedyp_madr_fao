@@ -1,0 +1,139 @@
+* {
+    font-family: 'Work Sans', sans-serif;
+}
+
+.v-text-field {
+    border-radius: 20px !important;
+}
+
+.v-text-field .v-input__control, .v-text-field .v-input__slot, .v-text-field fieldset {
+    border-color: #004884 !important;
+}
+
+.mdi-decagram { 
+    color: #ff5252 !important;
+    font-size: 10px !important;
+}
+
+.v-data-table {
+    border-radius: 20px !important;
+}
+
+.v-data-table-header {
+    background-color: #F2F2F2 !important;
+}
+
+.font-16 {
+    font-size: 16px !important;
+}
+
+.font-12 {
+    font-size: 12px !important;
+}
+
+.p-content {
+    color: #4B4B4B;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px !important;
+}
+
+.p-content-white {
+    color: white;
+    font-family: 'Work Sans', sans-serif;
+}
+
+.title-basic {
+    color: #004884 !important;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.title-main {
+    font-size: 36px !important;
+}
+
+.title-content {
+    font-size: 30px !important;
+}
+
+.subtitle {
+    font-size: 27px !important;
+}
+
+.button-basic {
+    border-radius: 10px !important;
+    font-family: 'Work Sans', sans-serif;
+}
+
+.background-primary {
+    background-color: #3366CC !important;
+    color: white  !important;
+}
+
+.color-primary {
+    color: #004884 !important;
+}
+
+.background-primary-dark {
+    background-color: #004884 !important;
+    color: white  !important;
+}
+
+.background-primary-dropdowns {
+    background-color: #E6EFFD !important;
+}
+
+.container-titles {
+    background-color: #F2F2F2;
+    border-radius: 10px 10px 0px 0px;
+}
+
+.section{
+    background-color: #F2F2F2;
+    border-radius: 10px 10px 10px 10px;
+    max-height: auto;
+}
+
+.color-primary-dropdowns {
+    background-color: #E6EFFD !important;
+}
+
+.color-primary-dark {
+    color: #004884 !important;
+}
+
+.color-primary-dark {
+    color: #004884 !important;
+}
+
+.color-black {
+    color: #4B4B4B !important;
+}
+
+.border-basic {
+    border-radius: 20px !important;
+}
+
+.border-head-table {
+    border-top-left-radius: 20px !important;
+    border-top-right-radius: 20px !important;
+}
+
+.footer {
+    /* background-color: #004884 !important; */
+    background-color: white !important;
+    z-index: 100 !important;
+}
+
+.img-main {
+  background: url("../img/foto_\ inicio.jpg") no-repeat center center;
+  min-height:100vh;
+  min-width: 100%;
+  background-size:cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cursor-click {
+    cursor: pointer;
+}

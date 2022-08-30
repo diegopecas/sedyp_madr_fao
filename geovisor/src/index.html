@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/venobox/1.9.3/venobox.css" 
+    integrity="sha512-QNXKinXDUMic9CFhTKRcc6oVgQctTz1ctZ0enkJrPKwA2aOeYbXxBjDqneUMlor7kGPp+qzbyN6jQrMO+ZsGsA==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+     crossorigin=""/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.Default.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" 
+    integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/three-dots/0.2.1/three-dots.min.css" 
+    integrity="sha512-dWmVYu6HOa5uQf4SwTAGU1i0G9oOEDKX2+8ZOcown+l6dmFstrnv2ucyCnuVs3XmSIZzz976nGNNNg/CIska0A==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/introjs.css" 
+    integrity="sha512-n/6qsbBjjZik70avxNu5SS3tXMbWby7M7xiN/43zHKB2iPTcPaB98Y7+QN0pHWIDa2EDRCW5/d7fSB5XgBdTnw==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <link rel="icon" type="image/png" href="./assets/img/favicon.png"/>
+    <title>FAO GEOVISOR</title>
+</head>
+
+
+<body>
+
+  <div id="mymap">
+    <div id="spin" class="dot-spin hidden"></div>
+  </div>
+
+  <div id="left_sidebar"></div>
+
+  <div id="right_sidebar" class="container">
+    <div class="d-flex flex-column" style="height:100%">
+      <button class="close ml-auto mt-2"><i class="fa fa-close" style="font-size:20px"></i></button>
+      <form class="needs-validation" novalidate>   
+        <div class="col-sm">
+          <p class="h2 mt-1 txt-fao" align="center"><b>Menú de filtros</b></p>
+        </div>
+        <div class="card w-100" id="accordionExample"> 
+          <div class="card">
+            <h5 class="card-header bg-fao txt-fao" id="headingZero">
+              <button class="btn btn-link txt-fao no-pointer-event" type="button" data-bs-toggle="col-smlapse" data-bs-target="#" aria-expanded="true" aria-controls="col-smlapseZero">
+                  <b>Tipo de visualización</b> 
+              </button>
+            </h5>
+            <div id="col-smlapseZero" class="accordion-col-smlapse col-smlapse show" aria-labelledby="headingZero" data-bs-parent="#accordionExample">
+              <div class="card-body">
+                  <select id="tipo_visualizacion" class="selectpicker show-tick form-control" title="Elegir..." required>
+                      <option value="Departamento" >Departamento (Polígono)</option>
+                      <option value="Municipio">Municipio (Polígono)</option>
+                      <option value="Puntual">Evento (Punto) </option>
+                  </select>  
+                  <div id="textovalidador" class="invalid-feedback">
+                    Por favor seleccionar un tipo de visualización.
+                  </div>
+              </div>
+            </div>
+          </div>
+          <div id="listado_nombre_uer_container" class="card">
+          </div>
+          <div class="card">
+              <h2 class="card-header bg-fao txt-fao" id="headingOne">
+                <button class="btn btn-link txt-fao no-pointer-event" type="button" data-bs-toggle="col-smlapse" data-bs-target="#" aria-expanded="true" aria-controls="col-smlapseOne">
+                    <b>Sistema productivo</b>
+                </button>
+              </h2>
+              <div id="col-smlapseOne" class="accordion-col-smlapse col-smlapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div class="card-body">
+                    <select id="sistema_productivo" class="show-tick form-control" data-live-search="true" multiple title="Elegir..." data-actions-box="true">
+                    </select>
+                </div>
+              </div>
+          </div>
+          <div class="card">
+              <h2 class="card-header bg-fao txt-fao" id="headingTwo">
+                <button class="btn btn-link txt-fao no-pointer-event" type="button" data-bs-toggle="col-smlapse" data-bs-target="#" aria-expanded="true" aria-controls="col-smlapseTwo">
+                  <b>Tipo de evento</b>
+                </button>
+              </h2>
+              <div id="col-smlapseTwo" class="accordion-col-smlapse col-smlapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                <div class="card-body">
+                  <select id="tipo_evento" class="show-tick form-control" title="Elegir...">
+                  </select>
+                </div>
+              </div>
+          </div>
+          <div class="card">
+              <h2 class="card-header bg-fao txt-fao" id="headingFour">
+                <button class="btn btn-link txt-fao no-pointer-event" type="button" data-bs-toggle="col-smlapse" data-bs-target="#" aria-expanded="true" aria-controls="col-smlapseFour">
+                  <b>Fecha</b>
+                </button>
+              </h2>
+              <div id="col-smlapseFour" class="accordion-col-smlapse col-smlapse show" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+                <div class="card-body">
+                  <div class="row">
+                      <div class="col-sm">
+                          <label for="startdate" class="form-label">Fecha de inicio</label>
+                          <input id="startdate" type=date class="form-control"> 
+                      </div>
+                      <div class="col-sm">
+                          <label for="finaldate" class="form-label">Fecha final</label>
+                          <input id="finaldate" type=date class="form-control">
+                      </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+        <div class="card mt-3">
+            <button id="filtrar_informacion_boton" class="btn bg-dark-fao" type="button">Filtrar información</button>
+        </div>  
+      </form>
+      <div id="footer" class="mt-auto mb-3 bg-dark-fao  no-pointer-event"></div>  
+    </div>
+  </div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js" ></script>
+    <script src="https://unpkg.com/esri-leaflet@3.0.2/dist/esri-leaflet.js"
+    integrity="sha512-myckXhaJsP7Q7MZva03Tfme/MSF5a6HC2xryjAM4FxPLHGqlh5VALCbywHnzs2uPoF/4G/QVXyYDDSkp5nPfig=="
+    crossorigin=""></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js" 
+    integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" 
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" 
+    crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" 
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" 
+    crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.0/dist/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/venobox/1.9.3/venobox.js" 
+    integrity="sha512-58KxhG+wNkjwSa3ejC6PlVoQLjD5wxRxfpjB24/L7TXByQIEXE04/JKWeD17pTAOIERUMAnj7+3ff/L45ZNQlw==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/hosuaby/Leaflet.SmoothMarkerBouncing@v2.0.0/dist/bundle.js"
+    crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/underscore@1.12.0/underscore-min.js"></script>
+    <script src="https://unpkg.com/leaflet.featuregroup.subgroup@1.0.2/dist/leaflet.featuregroup.subgroup.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/intro.js" 
+    integrity="sha512-u8KX8882NoHu0go0Lh2OVdOOeGgRz7rMIViN87XkI/5QfttoShU88qFda6HBlUJfcSEZopuj4stj6r7FNp4MVw==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+</body>
+</html>

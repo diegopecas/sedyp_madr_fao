@@ -1,0 +1,117 @@
+@app.route('/login', methods=['POST'])
+def login():
+    # tomando valores del request
+    email = request.get_json()['email']
+    password = request.get_json()['password']
+
+    # conenctando con la BD y validando si esta ok usuario y contraseña
+    cnx._open_connection()
+    cursor = cnx.cursor()
+    query = ("""
+    SELECT
+    a.id, a.usuario, a.email, a.password, a.activo, a.nombre,
+    a.apellido, a.numero_documento, a.cod_tipo_documento, 
+    a.institucion, a.cargo, b.tipo_documento
+    FROM usuarios a
+    JOIN tipo_documento b ON (b.cod_tipo_documento = a.cod_tipo_documento) 
+    WHERE email = '{0}' AND password = '{1}' AND activo = 'S'
+    """)
+    cursor.execute(query.format(email, password))
+    records = cursor.fetchall()
+
+    # si existe le doy el token
+    if cursor.rowcount > 0:
+        cnx.close()
+        for row in records:
+            res = {
+                'id': row[0],
+                'usuario': row[1],
+                'email': row[2],
+                'activo': row[4],
+                'nombre': row[5],
+                'apellido': row[6],
+                'nuDocumento': row[7],
+                'idDocumento': row[8],
+                'institucion': row[9],
+                'cargo': row[10],
+                'nombreDocumento': row[11]
+            }
+        token = jwt.encode({'userobj': res, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60)}, app.config['SECRET_KEY'])
+        return jsonify({'token': token.decode('UTF-8')})
+    cnx.close()
+    return jsonify({'message': 'Error en autenticación'}), 400
+
+#create user
+@app.route('/createUser', methods=['POST'])
+def createUser():
+    # capture request data
+    obj = request.get_json()['obj']
+    # open conection
+    cnx._open_connection()
+    cursor = cnx.cursor()
+    try:
+      sql = ("""
+      INSERT INTO usuarios (usuario,email,password,activo,nombre,apellido,numero_documento,cod_tipo_documento,institucion,cargo)
+      VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+      """)
+      val = (obj['usuario'], obj['email'], obj['password'], obj['active'], obj['firstName'], obj['lastName'], obj['numDocument'], obj['typeDocument'], obj['institution'], obj['workCenter'])
+      cursor.execute(sql,val)
+      res = {
+        'id': cursor.lastrowid,
+        'usuario': obj['usuario'],
+        'email': obj['email'],
+        'activo': obj['active'],
+        'nombre': obj['firstName'],
+        'apellido': obj['lastName'],
+        'nuDocumento': obj['numDocument'],
+        'idDocumento': obj['typeDocument'],
+        'institucion': obj['institution'],
+        'cargo': obj['workCenter']
+      }
+      # close conection
+      cnx.close()
+      token = jwt.encode({'userobj': res, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60)}, app.config['SECRET_KEY'])
+      return jsonify({'token': token.decode('UTF-8')})
+    except ValueError:
+      print(ValueError)
+      # close conection
+      cnx.close()
+      return jsonify({'message': 'Ocurrio un error al crear el usuario.'}), 400
+
+# update user
+@app.route('/updateUser', methods=['POST'])
+def updateUser():
+    # capture request data
+    obj = request.get_json()['obj']
+    print(obj)
+    # open conection
+    cnx._open_connection()
+    cursor = cnx.cursor()
+    try:
+      sql = ("""
+      UPDATE usuarios SET usuario=%s,email=%s,password=%s,activo=%s,nombre=%s,apellido=%s,numero_documento=%s,cod_tipo_documento=%s,institucion=%s,cargo=%s
+      WHERE id=%s
+      """)
+      val = (obj['usuario'], obj['email'], obj['password'], obj['active'], obj['firstName'], obj['lastName'], obj['numDocument'], obj['typeDocument'], obj['institution'], obj['workCenter'], obj['idUser'])
+      cursor.execute(sql,val)
+      res = {
+        'id': obj['idUser'],
+        'usuario': obj['usuario'],
+        'email': obj['email'],
+        'activo': obj['active'],
+        'nombre': obj['firstName'],
+        'apellido': obj['lastName'],
+        'nuDocumento': obj['numDocument'],
+        'idDocumento': obj['typeDocument'],
+        'institucion': obj['institution'],
+        'cargo': obj['workCenter']
+      }
+      # close conection
+      cnx.close()
+      token = jwt.encode({'userobj': res, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60)}, app.config['SECRET_KEY'])
+      return jsonify({'token': token.decode('UTF-8')})
+    except ValueError:
+      print(ValueError)
+      # close conection
+      cnx.close()
+      return jsonify({'message': 'Ocurrio un error al crear el usuario.'}), 400
